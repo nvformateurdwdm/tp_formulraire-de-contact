@@ -1,6 +1,7 @@
 <?php
     
-    define("IS_DEBUG", $_SERVER["HTTP_HOST"] == "localhost" ? true : false);
+    $getDebug = isset($_GET["debug"]) && $_GET["debug"] == "true" ? true : false;
+    define("IS_DEBUG", $_SERVER["HTTP_HOST"] == "localhost" || $getDebug ? true : false);
 
     $firstname = $lastname = $subject = $email = $message = "";
     $firstnameError = $lastnameError = $subjectError = $emailError = $messageError = "";
