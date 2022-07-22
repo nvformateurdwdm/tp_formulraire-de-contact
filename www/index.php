@@ -52,6 +52,8 @@
         if($noError){
             $headers = "From: $firstname $lastname <$email>\r\nReply-To: $email";
             mail($emailTo, $subject, $emailText, $headers);
+
+            $firstname = $lastname = $subject = $email = $message = "";
         }
 
     }else{
@@ -64,6 +66,7 @@
         $input = trim($input);
         $input = stripslashes($input);
         $input = htmlspecialchars($input);
+        // $input = utf8_encode($input);
         if(IS_DEBUG){
             echo $input;
             echo "<br>";
