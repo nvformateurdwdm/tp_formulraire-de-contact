@@ -3,8 +3,8 @@
     $getDebug = isset($_GET["debug"]) && $_GET["debug"] == "true" ? true : false;
     define("IS_DEBUG", $_SERVER["HTTP_HOST"] == "localhost" || $getDebug ? true : false);
 
-    $firstname = $lastname = $subject = $email = $message = "";
-    $firstnameError = $lastnameError = $subjectError = $emailError = $messageError = "";
+    $firstname = $lastname = $subject = $email = $phone = $message = "";
+    $firstnameError = $lastnameError = $subjectError = $emailError = $phoneError = $messageError = "";
     
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         if(IS_DEBUG){
@@ -39,6 +39,13 @@
             $emailError = "Veuillez vérifier votre email.";
         }else{
             $emailText .= "email : " . $email . "\n";
+        }
+        //
+        $phone = isset($_POST["phone"]) ? checkInput($_POST["phone"]) : "";
+        if(isPhone($phone) == 0){
+            $phoneError = "Veuillez vérifier votre numéro de téléphone.";
+        }else{
+            $emailText .= "phone : " . $phone . "\n";
         }
         //
         $message = isset($_POST["message"]) ? checkInput($_POST["message"]) : "";
@@ -77,6 +84,10 @@
 
     function isEmail($email){
         return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    function isPhone($phone){
+        return preg_match("/^[0-9 ]*$/", $phone);
     }
 
     function getError($error){
@@ -118,6 +129,12 @@
                 }
             ?>
             <input type="email" placeholder="exemple@email.com" name="email" value="<?php echo $email ?>" <?php echo !IS_DEBUG ? "required" : "" ?> >
+            <?php 
+                if($emailError != ""){
+                    echo getError($emailError);   
+                }
+            ?>
+            <input type="tel" placeholder="06 90 90 90 90" name="phone" pattern="(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})" value="<?php echo $email ?>" <?php echo !IS_DEBUG ? "required" : "" ?> >
             <?php 
                 if($emailError != ""){
                     echo getError($emailError);   
